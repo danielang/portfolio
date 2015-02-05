@@ -11,9 +11,10 @@ class Controller extends \Ip\WidgetController
     
     public function generateHtml($revisionId, $widgetId, $data, $skin)
     {
-        if (!isset($data['widgetId']))
+        $data['widgetId'] = $widgetId;
+        if (!isset($data['originalWidgetId']))
         {
-            $data['widgetId'] = $widgetId;
+            $data['originalWidgetId'] = $widgetId;
         }
         
         if (!isset($data['filters']))
@@ -21,9 +22,14 @@ class Controller extends \Ip\WidgetController
             $data['filters'] = array();
         }
         
-        if (!isset($data['items']))
+        if (!isset($data['tiles']))
         {
-            $data['items'] = array();
+            $data['tiles'] = array();
+        }
+        
+        if (!isset($data['nextBlockId']))
+        {
+            $data['nextBlockId'] = 0;
         }
         
         return parent::generateHtml($revisionId, $widgetId, $data, $skin);
@@ -41,33 +47,7 @@ class Controller extends \Ip\WidgetController
     
     public function adminHtmlSnippet()
     {
-        $form = new \Ip\Form();
-        
-        $form->setEnvironment(\Ip\Form::ENVIRONMENT_ADMIN);
-
-        $field = new \Ip\Form\Field\Text(
-            array(
-                'name' => 'label',
-                'label' => __('Name', 'Portfolio'),
-                'note' => __('only displayed in the Settings', 'Portfolio'),
-                'value' => null
-            )
-        );
-        $field->addValidator('Required');
-        $form->addField($field);
-
-        $field = new \Ip\Form\Field\Text(
-            array(
-                'name' => 'filter',
-                'label' => __('Filter', 'Portfolio'),
-                'note' => __('Separate by ;', 'Portfolio'),
-                'value' => null
-            )
-        );
-        $field->addValidator('Required');
-        $form->addField($field);
-        
-        return ipView('snippet/edit.php', array('form' => $form))->render();
+        return ipView('snippet/edit.php')->render();
     }
     
     public function update($widgetId, $postData, $currentData)
@@ -77,13 +57,7 @@ class Controller extends \Ip\WidgetController
             $postData['tiles'] = array();
         }
         
-        if (!isset($postData['filters']))
-        {
-            $postData['filters'] = array();
-        }
-        
         $tiles = $postData['tiles'];
-        $filters = $postData['filters'];
         $newFilters = array();
         
         foreach ($tiles as $key => $value) {
@@ -96,9 +70,6 @@ class Controller extends \Ip\WidgetController
             }
             
             for ($i = 0; $i < $filterStrLen; $i++) {
-                    
-                error_log($filterStr[$i], 0);
-
                 if (!$this->in_array_r($filterStr[$i], $newFilters)) {
                     $newFilters[] = array('text' => $filterStr[$i],
                                           'filter' => crc32($filterStr[$i]));
@@ -114,30 +85,28 @@ class Controller extends \Ip\WidgetController
         
         $postData['tiles'] = $tiles;
         $postData['filters'] = $newFilters;
+        $postData['originalWidgetId'] = empty($currentData['originalWidgetId']) ? $widgetId : $currentData['originalWidgetId'];
         
         return $postData;
     }
     
-    protected function in_array_r($needle, $haystack, $strict = false)
+    public function duplicate($oldId, $newId, $data)
     {
-        foreach ($haystack as $item) {
-            
-            error_log($item, 0);
-            
-            if ($strict ? $item === $needle : $item == $needle)
-            {
-                return true;
-            } 
-            elseif (is_array($item))
-            {
-                return $this->in_array_r($needle, $item, $strict);
-            }
-            
-            //if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && $this->in_array_r($needle, $item, $strict))) {
-            //    return true;
-            //}
+        if (!isset($data['originalWidgetId']))
+        {
+            $data['originalWidgetId'] = $oldId;
         }
-
+        
+        return $data;
+    }
+    
+    protected function in_array_r ($needle, $haystack)
+    {
+        foreach($haystack as $key=>$value) {
+            if($needle===$value OR (is_array($value) && $this->in_array_r($needle,$value) !== false)) {
+                return true;
+            }
+        }
         return false;
     }
 }

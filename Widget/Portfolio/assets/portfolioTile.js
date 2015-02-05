@@ -22,7 +22,8 @@
                     data = {
                         options : {
                             label : '',
-                            filter : ''
+                            filter : '',
+                            blockId : 0
                         }
                     };
                     
@@ -32,10 +33,12 @@
                     if (options.filter) {
                         data.options.filter = options.filter;
                     }
+                    if (options.blockId) {
+                        data.options.blockId = options.blockId;
+                    }                    
                     
                     $this.data('ipWidget_Portfolio_Tile', {
-                        options : data.options,
-                        tileOptionsPopup : options.tileOptionsPopup
+                        options : data.options
                     });
 
                     var field = $this.find('.ipsTileLabel');
@@ -60,8 +63,6 @@
                 }
 
                 var $thisForEvent = $this;
-                
-                //$this.find('.ipsTileOptions').on('click', $.proxy(openOptionsPopup, this));
                 
                 $this.find('.ipsTileRemove').bind('click', function(event){
                     $thisForEvent.ipWidget_Portfolio_Tile('setStatus', 'deleted');
@@ -95,6 +96,12 @@
             var tmpData = $this.data('ipWidget_Portfolio_Tile');
             return tmpData.options.filter;
         },
+        
+        getBlockId : function() {
+            var $this = this;
+            var tmpData = $this.data('ipWidget_Portfolio_Tile');
+            return tmpData.options.blockId;
+        },
 
         getStatus : function() {
             var $this = this;
@@ -108,24 +115,8 @@
             tmpData.status = newStatus;
             $this.data('ipWidget_Portfolio_Tile', tmpData);
 
-        },
-
-        
+        }
     };
-
-    var openOptionsPopup = function () {
-        var $this = $(this);
-        var data = $this.data('ipWidget_Portfolio_Tile');
-        var $tileContext = $this;
-        data.tileOptionsPopup.bind('saveOptions.ipWidget_Portfolio', function(e,options){
-            $this = $(this); // popup context
-            $this.unbind('saveOptions.ipWidget_Portfolio');
-            $.proxy(setOptions, $tileContext)(options);
-        });
-
-        data.tileOptionsPopup.ipWidget_Portfolio_options('showOptions', $this.ipWidget_Portfolio_Tile('getOptions'));
-    };
-
 
     var setOptions = function (options) {
         var $this = this;

@@ -11,15 +11,14 @@
                             <?php echo $filteritem['text']; ?>
                         </a>
                     </li>
-                <?php }
-            
-                if (ipIsManagementState()) { ?>
-                    <li class="portfolio-add pin"><a href="#" class="btn-theme btn-small portfolio-add<?php echo $widgetId; ?>" ><?php echo _e('Options', 'Portfolio'); ?></a></li>
-                <?php }
-            ?>
+            <?php } ?>
             
         </ul>
     </nav>
+    
+    <?php if (count($tiles) == 0) { ?>
+        <p><?php _e('No Items are configured yet. Please click the gear of this plugin and select Items.', 'Portfolio'); ?></p>
+    <?php } ?>
     
     <div class="col-md-12">
         <div class="row">
@@ -31,8 +30,7 @@
                             echo ' ' . $widgetId . $f['filter'];
                     } ?>">
 				        <div>
-                            <p>Test</p>
-                            <?php //echo ipBlock('portfolio' . $widgetId . '-' . $item['id'])->render(); ?>
+                            <?php echo ipBlock('portfolio' . $originalWidgetId . '-' . $tile['blockId'])->render(); ?>
                         </div>
                     </article>
                 <?php } ?>
@@ -43,51 +41,51 @@
 </div>
 
 <?php
-        $portfolioJsScript = '
+    $portfolioJsScript = '
                 
-            $(document).ready(function () {
-                "use strict"; 
+        $(document).ready(function () {
+            "use strict"; 
                 
-                window.portfolio' . $widgetId . 'Init = function () {
+            window.portfolio' . $widgetId . 'Init = function () {
                         
-                    if($(\'.isotopeWrapper' . $widgetId . '\').length){
-                        var $container = $(\'.isotopeWrapper' . $widgetId . '\');
-                        var $resize = $(\'.isotopeWrapper' . $widgetId . '\').attr(\'width\');
+                if($(\'.isotopeWrapper' . $widgetId . '\').length){
+                    var $container = $(\'.isotopeWrapper' . $widgetId . '\');
+                    var $resize = $(\'.isotopeWrapper' . $widgetId . '\').attr(\'width\');
 
+                    $container.isotope({
+                        itemSelector: \'.isotopeItem\',
+                        resizable: false, // disable normal resizing
+                        masonry: {
+                            columnWidth: $container.width() / $resize
+                        }
+                    });
+
+                    $(\'#filter' . $widgetId . ' a\').click(function(){
+                        $(\'#filter' . $widgetId . ' a\').removeClass(\'current\');
+                        $(this).addClass(\'current\');
+                        var selector = $(this).attr(\'data-filter\');
                         $container.isotope({
-                            itemSelector: \'.isotopeItem\',
-                            resizable: false, // disable normal resizing
-                            masonry: {
-                                columnWidth: $container.width() / $resize
+                            filter: selector,
+                            animationOptions: {
+                                duration: 1000,
+                                easing: \'easeOutQuart\',
+                                queue: false
                             }
                         });
-
-                        $(\'#filter' . $widgetId . ' a\').click(function(){
-                            $(\'#filter' . $widgetId . ' a\').removeClass(\'current\');
-                            $(this).addClass(\'current\');
-                            var selector = $(this).attr(\'data-filter\');
-                            $container.isotope({
-                                filter: selector,
-                                animationOptions: {
-                                    duration: 1000,
-                                    easing: \'easeOutQuart\',
-                                    queue: false
-                                }
-                            });
-                            return false;
-                        });
-                    }
-                };
+                        return false;
+                    });
+                }
+            };
                 
                 
                 
-                window.portfolio' . $widgetId . 'Init();
-            });
+            window.portfolio' . $widgetId . 'Init();
+        });
             
-            $(window).load( function() {
-                if (window[\'portfolio' . $widgetId . 'Init\'])
-                    window.portfolio' . $widgetId . 'Init();
-            });';
+        $(window).load( function() {
+            if (window[\'portfolio' . $widgetId . 'Init\'])
+                window.portfolio' . $widgetId . 'Init();
+        });';
 
-        ipAddJsContent('portfolio' . $widgetId, $portfolioJsScript);
-    ?>
+    ipAddJsContent('portfolio' . $widgetId, $portfolioJsScript);
+?>

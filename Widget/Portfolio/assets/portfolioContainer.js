@@ -22,7 +22,7 @@
                     $this.data('ipWidget_Portfolio_container', {
                         tiles : tiles,
                         tileTemplate : options.tileTemplate,
-                        tileOptionsPopup : options.tileOptionsPopup
+                        nextBlockId : options.nextBlockId
                     });
 
                     if (! tiles instanceof Array) {
@@ -42,23 +42,33 @@
 
         addTile : function (tileData) {
             var $this = this;
+            var options = $this.data('ipWidget_Portfolio_container');
+            
             if (typeof tileData !== 'object') {
-                tileData = {};
+                tileData = {
+                    blockId : options.nextBlockId
+                };
+                
+                // count up
+                options.nextBlockId++;
             }
-            var data = tileData;
-            data.tileOptionsPopup = $this.data('ipWidget_Portfolio_container').tileOptionsPopup;
-            var $newTileRecord = $this.data('ipWidget_Portfolio_container').tileTemplate.clone();
-            $newTileRecord.ipWidget_Portfolio_Tile(data);
+            
+            // generate Tile
+            var $newTileRecord = options.tileTemplate.clone();
+            $newTileRecord.ipWidget_Portfolio_Tile(tileData);
 
             $this.append($newTileRecord);
-
         },
-
-
 
         getTiles : function () {
             var $this = this;
             return $this.find('.ipsTileTemplate');
+        },
+        
+        getNextBlockId : function () {
+            var $this = this;
+            var options = $this.data('ipWidget_Portfolio_container');
+            return options.nextBlockId;
         },
 
         destroy : function () {
