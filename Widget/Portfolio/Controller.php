@@ -11,6 +11,7 @@ class Controller extends \Ip\WidgetController
     
     public function generateHtml($revisionId, $widgetId, $data, $skin)
     {
+        $data['revisionId'] = $revisionId;
         $data['widgetId'] = $widgetId;
         if (!isset($data['originalWidgetId']))
         {

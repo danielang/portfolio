@@ -14,12 +14,6 @@ class Filter
                     'class' => '_edit ipsWidgetItems'
                 )
             );
-            $optionsMenu[] = array(
-                'title' => __('Reload', 'Portfolio', false),
-                'attributes' => array(
-                    'class' => '_edit ipsWidgetReload'
-                )
-            );
         }
         
         return $optionsMenu;

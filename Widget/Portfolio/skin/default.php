@@ -30,7 +30,7 @@
                             echo ' ' . $widgetId . $f['filter'];
                     } ?>">
 				        <div>
-                            <?php echo ipBlock('portfolio' . $originalWidgetId . '-' . $tile['blockId'])->render(); ?>
+                            <?php echo \Ip\Internal\Content\Model::generateBlock('portfolio' . $originalWidgetId . '-' . $tile['blockId'], $revisionId, 0, ipIsManagementState()); ?>
                         </div>
                     </article>
                 <?php } ?>

@@ -19,11 +19,6 @@ var IpWidget_Portfolio;
                 $.proxy(context.openOptions(), context);
             });
             
-            this.$reloadButton = this.widgetObject.find('.ipsWidgetReload');
-            this.$reloadButton.on('click', function (e) {
-                $.proxy(context.reloadWidget(), context);
-            });
-            
             // init isotope
             if (window['portfolio' + this.data.widgetId + 'Init'])
                 window['portfolio' + this.data.widgetId + 'Init']();
@@ -83,6 +78,7 @@ var IpWidget_Portfolio;
             
             // hide modal
             this.modal.modal('hide');
+            
         };
         
         var addTile = function () {
@@ -110,37 +106,6 @@ var IpWidget_Portfolio;
             data.nextBlockId = this.container.ipWidget_Portfolio_container('getNextBlockId');
             
             return data;
-        };
-        
-        this.reloadWidget = function () {
-            var postdata = {
-                aa: 'Portfolio.generateWidgetHtml',
-                securityToken: ip.securityToken,
-                widgetId: this.data.widgetId
-            }
-
-            $.ajax({
-                url: ip.baseUrl,
-                data: postdata,
-                dataType: 'json',
-                type: 'POST',
-                success: function (response) {
-                    var $widget = this.widgetObject;
-                    var newWidget = response.html;
-                    var $newWidget = $(newWidget);
-                    $newWidget.insertAfter($widget);
-                    $newWidget.trigger('ipWidgetReinit');
-
-                    // init any new blocks the widget may have created
-                    $(document).ipContentManagement('initBlocks', $newWidget.find('.ipBlock'));
-                    $widget.remove();
-
-                },
-                error: function (response) {
-                    alert('Error: ' + response.responseText);
-                }
-
-            });
         };
     };
         
