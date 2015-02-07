@@ -78,7 +78,6 @@ var IpWidget_Portfolio;
             
             // hide modal
             this.modal.modal('hide');
-            
         };
         
         var addTile = function () {
