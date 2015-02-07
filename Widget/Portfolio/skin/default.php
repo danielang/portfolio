@@ -1,11 +1,11 @@
 <div class="portfoliocontent">
     <nav id="filter<?php echo $widgetId; ?>" class="col-md-12 text-center isotopeFilter">
         <ul<?php if (ipIsManagementState()) { echo ' class="sortable' . $widgetId . '"'; } ?>>
-            <li class="pin"><a href="#" class="current btn-theme btn-small" data-filter="*"><?php echo _e('All', 'Portfolio'); ?></a></li>
+            <li class="pin"><a href="#" class="current btn-theme btn-small" data-filter=".<?php echo $widgetId . 'all'; ?>"><?php echo _e('All', 'Portfolio'); ?></a></li>
             
             <?php
                 foreach ($filters as $filteritem) { ?>
-                    <li <?php if (ipIsManagementState()) { echo ' class="ui-state-default"'; } ?>>
+                    <li <?php if (ipIsManagementState()) { echo ' class="ui-state-default" data-sortable="' . $filteritem['text'] . '"'; } ?>>
                         <?php if (ipIsManagementState()) { echo '<span class="handle portfoliofont-resize-horizontal" ></span>'; } ?>
                         <a href="#" class="btn-theme btn-small" data-filter=".<?php echo $widgetId . $filteritem['filter']; ?>" >
                             <?php echo $filteritem['text']; ?>
@@ -26,7 +26,7 @@
                 
                 <?php foreach ($tiles as $tile) { ?>
                     <article <?php if (ipIsManagementState()) { echo 'title="' . $tile['label'] . '"'; } ?>
-                        class="col-md-4 isotopeItem<?php foreach ($tile['filters'] as $f) {
+                        class="col-md-4 isotopeItem <?php echo $widgetId . 'all'; foreach ($tile['filters'] as $f) {
                             echo ' ' . $widgetId . $f['filter'];
                     } ?>">
 				        <div>

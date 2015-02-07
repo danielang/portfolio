@@ -22,6 +22,24 @@ var IpWidget_Portfolio;
             // init isotope
             if (window['portfolio' + this.data.widgetId + 'Init'])
                 window['portfolio' + this.data.widgetId + 'Init']();
+            
+            // init filter sortation
+            $('.sortable' + this.data.widgetId).sortable({ axis: "x", cursor: "move", handle: ".handle", items: '> li:not(.pin)',
+                stop: function( event, ui ) {
+                    var filterSortation = $(this).sortable('toArray', {attribute: 'data-sortable'});
+                    
+                    alert(filterSortation);
+                    
+//                    if (!context.data.filters)
+//                        context.data.filters = []
+//                                             
+//                    context.data.filters = $(this).sortable('toArray', {attribute: 'data-filter'});
+//                                         
+//                    context.widgetObject.save(context.data, 1);
+                }
+            });
+            
+            $('.sortable' + this.data.widgetId).disableSelection();
         };
         
         this.openOptions = function () {

@@ -57,29 +57,36 @@ class Controller extends \Ip\WidgetController
         {
             $postData['tiles'] = array();
         }
+        if (!isset($postData['filters']))
+        {
+            $postData['filters'] = array();
+        }
         
         $tiles = $postData['tiles'];
+        $oldFilters = $postData['filters'];
         $newFilters = array();
         
         foreach ($tiles as $key => $value) {
-            $filterStr = explode(";", $tiles[$key]['filter']);
             
-            $filterStrLen = count($filterStr);
+            $tiles[$key]['filters'] = array();
             
-            if (!isset($tiles[$key]['filters'])) {
-                $tiles[$key]['filters'] = array();
-            }
-            
-            for ($i = 0; $i < $filterStrLen; $i++) {
-                if (!$this->in_array_r($filterStr[$i], $newFilters)) {
-                    $newFilters[] = array('text' => $filterStr[$i],
-                                          'filter' => crc32($filterStr[$i]));
-                }
-                    
-                if (!$this->in_array_r($filterStr[$i], $tiles[$key]['filters'])) {
-                    $tiles[$key]['filters'][] = array('text' => $filterStr[$i],
-                                                      'filter' => crc32($filterStr[$i]));
-                }
+            if (!empty($tiles[$key]['filter']) OR $tiles[$key]['filter'] != null)
+            {
+                $filterStr = explode(";", $tiles[$key]['filter']);
+
+                $filterStrLen = count($filterStr);
+
+                for ($i = 0; $i < $filterStrLen; $i++) {
+                    if (!$this->in_array_r($filterStr[$i], $newFilters)) {
+                        $newFilters[] = array('text' => $filterStr[$i],
+                                              'filter' => crc32($filterStr[$i]));
+                    }
+
+                    if (!$this->in_array_r($filterStr[$i], $tiles[$key]['filters'])) {
+                        $tiles[$key]['filters'][] = array('text' => $filterStr[$i],
+                                                          'filter' => crc32($filterStr[$i]));
+                    }
+                }    
             }
         }
         
