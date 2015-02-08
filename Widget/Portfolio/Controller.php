@@ -67,6 +67,8 @@ class Controller extends \Ip\WidgetController
         $newFilters = array();
         $filters = array();
         
+        error_log(print_r($oldFilters, true), 0);
+        
         foreach ($tiles as $key => $value) {
             
             $tiles[$key]['filters'] = array();
@@ -86,7 +88,7 @@ class Controller extends \Ip\WidgetController
                     }
                     elseif ($this->in_array_r($filterStr[$i], $oldFilters) && !$this->in_array_r($filterStr[$i], $filters) && !$this->in_array_r($filterStr[$i], $newFilters))
                     {
-                        array_splice( $filters, array_search($filterStr[$i], $oldFilters), 0, array($filteritem) );
+                        $filters[] = $filteritem;
                     }
                     
                     if (!$this->in_array_r($filterStr[$i], $tiles[$key]['filters'])) {
@@ -96,8 +98,29 @@ class Controller extends \Ip\WidgetController
             }
         }
         
+        // apply order to filters 
+        $orderedFilter = array();
+        
+        foreach ($filters as $key => $value)
+        {
+            $found = false;
+            $i = 0;
+            while ($i < count($oldFilters) OR !$found)
+            {
+                if ($oldFilters[$i] == $value['text'])
+                {
+                    $orderedFilter[$i] = $value;
+                    $found = true;
+                }
+                
+                $i++;
+            }
+        }
+        
+        ksort($orderedFilter);
+        
         // merge the arrays
-        $filters = array_merge($filters, $newFilters);
+        $filters = array_merge($orderedFilter, $newFilters);
         
         $postData['tiles'] = $tiles;
         $postData['filters'] = $filters;
@@ -126,21 +149,14 @@ class Controller extends \Ip\WidgetController
         return false;
     }
     
-    protected function array_insert( $array, $pairs, $key, $position = 'after' ) {
-        $key_pos = array_search( $key, array_keys( $array ) );
-
-        if ( 'after' == $position )
-            $key_pos++;
-
-        if ( false !== $key_pos ) {
-            $result = array_slice( $array, 0, $key_pos );
-            $result = array_merge( $result, $pairs );
-            $result = array_merge( $result, array_slice( $array, $key_pos ) );
+    protected function sortArrayByArray($array,$orderArray) {
+        $ordered = array();
+        foreach($orderArray as $key => $value) {
+            if(array_key_exists($key,$array)) {
+                    $ordered[$key] = $array[$key];
+                    unset($array[$key]);
+            }
         }
-        else {
-            $result = array_merge( $array, $pairs );
-        }
-
-        return $result;
+        return $ordered + $array;
     }
 }

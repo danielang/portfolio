@@ -130,8 +130,9 @@ var IpWidget_Portfolio;
             // save widgetdata and reload
             this.widgetObject.save(data, true);
             
-            // hide tilesModal
+            // hide modals
             this.tilesModal.modal('hide');
+            this.filterModal.modal('hide');
         };
         
         var addTile = function () {
@@ -160,10 +161,9 @@ var IpWidget_Portfolio;
             var $filters = this.filterContainer.ipWidget_portfolio_filter_container('getFilters');
             $filters.each(function(index) {
                 var $this = $(this);
-                var tmpField = new Object();
-                tmpField.filter = $this.ipWidget_portfolio_filter('getFilter');
+                var filter = $this.ipWidget_portfolio_filter('getFilter');
                 
-                data.filters.push(tmpField);
+                data.filters.push(filter);
             });
             
             data.nextBlockId = this.tilesContainer.ipWidget_portfolio_tile_container('getNextBlockId');
@@ -193,7 +193,7 @@ var IpWidget_Portfolio;
             // Button binding
             var context = this;
             this.confirmButton.off(); // ensure we will not bind second time
-            this.confirmButton.on('click', function(e) { console.log(context.getData()); }); //$.proxy(save, this));
+            this.confirmButton.on('click', $.proxy(save, this));
 
             
             // show filtersModal

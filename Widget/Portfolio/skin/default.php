@@ -1,12 +1,11 @@
 <div class="portfoliocontent">
     <nav id="filter<?php echo $widgetId; ?>" class="col-md-12 text-center isotopeFilter">
-        <ul<?php if (ipIsManagementState()) { echo ' class="sortable' . $widgetId . '"'; } ?>>
+        <ul>
             <li class="pin"><a href="#" class="current btn-theme btn-small" data-filter=".<?php echo $widgetId . 'all'; ?>"><?php echo _e('All', 'Portfolio'); ?></a></li>
             
             <?php
                 foreach ($filters as $filteritem) { ?>
-                    <li <?php if (ipIsManagementState()) { echo ' class="ui-state-default" data-sortable="' . $filteritem['text'] . '"'; } ?>>
-                        <?php if (ipIsManagementState()) { echo '<span class="handle portfoliofont-resize-horizontal" ></span>'; } ?>
+                    <li>
                         <a href="#" class="btn-theme btn-small" data-filter=".<?php echo $widgetId . $filteritem['filter']; ?>" >
                             <?php echo $filteritem['text']; ?>
                         </a>
