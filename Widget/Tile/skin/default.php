@@ -13,8 +13,8 @@
         <div class="portfolio-desc align-center">
                     
             <div class="folio-info">
-                <h5><?php echo empty($tile['title']) ? null : $tile['title']; ?></h5>
-                <h6><?php echo empty($tile['description']) ? null : $tile['description']; ?></h6>
+                <h4><?php echo empty($tile['title']) ? null : $tile['title']; ?></h4>
+                <h5><?php echo empty($tile['description']) ? null : $tile['description']; ?></h5>
                 <p class="portfolio-desc-link"><i class="portfoliofont-2x portfoliofont-export"></i></p>
             </div>
         </div>
@@ -24,8 +24,8 @@
     <div class="portfolio-desc align-center">
                     
         <div class="folio-info">
-            <h5><?php echo empty($tile['title']) ? null : $tile['title']; ?></h5>
-            <h6><?php echo empty($tile['description']) ? null : $tile['description']; ?></h6>
+            <h4><?php echo empty($tile['title']) ? null : $tile['title']; ?></h4>
+            <h5><?php echo empty($tile['description']) ? null : $tile['description']; ?></h5>
         </div>
     </div>
     

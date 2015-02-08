@@ -11,11 +11,6 @@ nav.isotopeFilter a:hover, nav.isotopeFilter a.current {
 	color:#fff !important;
 }
 
-nav.isotopeFilter .portfolio-add a {
-    background-color: #555 !important;
-	color: #4EBA4E !important;
-}
-
 .portfolio-item-nav {
     z-index: 50;
     line-height: 20px;
@@ -25,28 +20,30 @@ nav.isotopeFilter .portfolio-add a {
     text-decoration: none;
 }
 
+.portfolioFilterGroup,
 .portfolioTileGroup {
-    background-color: #d3d3d3;
-    border-radius: 4px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
+    background-color: #d3d3d3!important;
+    border-radius: 4px!important;
+    -webkit-border-radius: 4px!important;
+    -moz-border-radius: 4px!important;
     
-    margin-bottom: 10px;
+    margin-bottom: 10px!important;
 }
 
 .portfolioTileGroup table {
-    width: 100%;
+    width: 100%!important;
 }
 
 .portfolioTileGroup td {
-    vertical-align: middle;
-    padding: 2px 5px;
+    vertical-align: middle!important;
+    padding: 2px 5px!important;
 }
 
+.portfolioFilterGroup .btn,
 .portfolioTileGroup .btn {
     padding: 0!important;
-    height: 100%;
-    width: 30px;
+    height: 100%!important;
+    width: 30px!important;
 }
 
 .portfoliocontent article{
@@ -101,12 +98,11 @@ nav.isotopeFilter .handle {
 	top: 0;
 	color: rgba(70, 70, 70, 1);
     background: #FFF;
-    text-align: center;
 }
 
 
 .portfolio-item:hover .portfolio-desc {
-	padding-top: 20%;
+	padding-top: 10%;
 	height: 100%;
     transition: all 200ms ease-in-out 0s;
 	opacity: .8;
@@ -133,7 +129,7 @@ nav.isotopeFilter .handle {
 	top:5px;
 }
 
-.portfolio-item .portfolio-desc .folio-info h5 {
+/*.portfolio-item .portfolio-desc .folio-info h5 {
 	text-transform: uppercase;
     
 }
@@ -144,11 +140,13 @@ nav.isotopeFilter .handle {
 .portfolio-item .portfolio-desc .folio-info p {
 	
 	font-size: 12px;
-}
+}*/
 
 .portfolio-item .portfolio-desc .portfolio-desc-link {
     margin-top: 5px;
+    text-align: center;
 }
+
 
 /* Isotope Filtering */
 .isotope-item {
