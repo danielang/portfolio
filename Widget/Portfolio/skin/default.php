@@ -17,7 +17,7 @@
     </nav>
     
     <?php if (count($tiles) == 0) { ?>
-        <p><?php _e('No Items are configured yet. Please click the gear of this plugin and select Items.', 'Portfolio'); ?></p>
+        <p><?php _e('No Items are configured yet. Please click the gear of this plugin and select Tiles.', 'Portfolio'); ?></p>
     <?php } ?>
     
     <div class="col-md-12">

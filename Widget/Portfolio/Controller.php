@@ -65,6 +65,7 @@ class Controller extends \Ip\WidgetController
         $tiles = $postData['tiles'];
         $oldFilters = $postData['filters'];
         $newFilters = array();
+        $filters = array();
         
         foreach ($tiles as $key => $value) {
             
@@ -77,22 +78,29 @@ class Controller extends \Ip\WidgetController
                 $filterStrLen = count($filterStr);
 
                 for ($i = 0; $i < $filterStrLen; $i++) {
-                    if (!$this->in_array_r($filterStr[$i], $newFilters)) {
-                        $newFilters[] = array('text' => $filterStr[$i],
-                                              'filter' => crc32($filterStr[$i]));
+                    $filteritem = array('text' => $filterStr[$i],
+                                        'filter' => crc32($filterStr[$i]));
+                    
+                    if (!$this->in_array_r($filterStr[$i], $oldFilters) && !$this->in_array_r($filterStr[$i], $filters) && !$this->in_array_r($filterStr[$i], $newFilters)) {
+                        $newFilters[] = $filteritem;
                     }
-
+                    elseif ($this->in_array_r($filterStr[$i], $oldFilters) && !$this->in_array_r($filterStr[$i], $filters) && !$this->in_array_r($filterStr[$i], $newFilters))
+                    {
+                        array_splice( $filters, array_search($filterStr[$i], $oldFilters), 0, array($filteritem) );
+                    }
+                    
                     if (!$this->in_array_r($filterStr[$i], $tiles[$key]['filters'])) {
-                        $tiles[$key]['filters'][] = array('text' => $filterStr[$i],
-                                                          'filter' => crc32($filterStr[$i]));
+                        $tiles[$key]['filters'][] = $filteritem;
                     }
                 }    
             }
         }
         
+        // merge the arrays
+        $filters = array_merge($filters, $newFilters);
         
         $postData['tiles'] = $tiles;
-        $postData['filters'] = $newFilters;
+        $postData['filters'] = $filters;
         $postData['originalWidgetId'] = empty($currentData['originalWidgetId']) ? $widgetId : $currentData['originalWidgetId'];
         
         return $postData;
@@ -116,5 +124,23 @@ class Controller extends \Ip\WidgetController
             }
         }
         return false;
+    }
+    
+    protected function array_insert( $array, $pairs, $key, $position = 'after' ) {
+        $key_pos = array_search( $key, array_keys( $array ) );
+
+        if ( 'after' == $position )
+            $key_pos++;
+
+        if ( false !== $key_pos ) {
+            $result = array_slice( $array, 0, $key_pos );
+            $result = array_merge( $result, $pairs );
+            $result = array_merge( $result, array_slice( $array, $key_pos ) );
+        }
+        else {
+            $result = array_merge( $array, $pairs );
+        }
+
+        return $result;
     }
 }

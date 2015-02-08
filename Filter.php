@@ -10,9 +10,15 @@ class Filter
         if ($widgetRecord['name'] == 'Portfolio')
         {
             $optionsMenu[] = array(
-                'title' => __('Items', 'Portfolio', false),
+                'title' => __('Tiles', 'Portfolio', false),
                 'attributes' => array(
-                    'class' => '_edit ipsWidgetItems'
+                    'class' => '_edit ipsWidgetTiles'
+                )
+            );
+            $optionsMenu[] = array(
+                'title' => __('Filter', 'Portfolio', false),
+                'attributes' => array(
+                    'class' => '_edit ipsWidgetFilter'
                 )
             );
         }

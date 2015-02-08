@@ -14,64 +14,100 @@ var IpWidget_Portfolio;
             this.widgetObject = widgetObject;
             this.data = data;
             
-            this.$itemsButton = this.widgetObject.find('.ipsWidgetItems');
-            this.$itemsButton.on('click', function (e) {
-                $.proxy(context.openOptions(), context);
+            this.$tilesButton = this.widgetObject.find('.ipsWidgetTiles');
+            this.$tilesButton.on('click', function (e) {
+                $.proxy(context.openTilesOptions(), context);
+            });
+            
+            this.$filterButton = this.widgetObject.find('.ipsWidgetFilter');
+            this.$filterButton.on('click', function (e) {
+                $.proxy(context.openFilterOptions(), context);
             });
             
             // init isotope
             if (window['portfolio' + this.data.widgetId + 'Init'])
                 window['portfolio' + this.data.widgetId + 'Init']();
             
-            // init filter sortation
-            $('.sortable' + this.data.widgetId).sortable({ axis: "x", cursor: "move", handle: ".handle", items: '> li:not(.pin)',
-                stop: function( event, ui ) {
-                    var filterSortation = $(this).sortable('toArray', {attribute: 'data-sortable'});
-                    
-                    alert(filterSortation);
-                    
-//                    if (!context.data.filters)
-//                        context.data.filters = []
-//                                             
-//                    context.data.filters = $(this).sortable('toArray', {attribute: 'data-filter'});
-//                                         
-//                    context.widgetObject.save(context.data, 1);
-                }
-            });
             
-            $('.sortable' + this.data.widgetId).disableSelection();
-        };
-        
-        this.openOptions = function () {
-            var context = this;
-            var instanceData = this.data;
+            // init tiles container
+            this.tilesModal = $('#ipWidgetPortfolioTilesPopup');
+            this.tilesContainer = this.tilesModal.find('.ipWidget_portfolio_tile_container');
             
-            this.modal = $('#ipWidgetPortfolioPopup');
-            this.container = this.modal.find('.ipWidget_Portfolio_container');
-            
-            this.addButton = this.modal.find('.ipsTileAdd');
-            this.confirmButton = this.modal.find('.ipsConfirm');
-            
-            
-            // Init Container
             var options = {}
             
-            if (instanceData['tiles']) {
-                options.tiles = instanceData.tiles;
+            if (this.data['tiles']) {
+                options.tiles = this.data.tiles;
             } else {
                 options.tiles = new Array();
             }
             
-            if (instanceData['nextBlockId']) {
-                options.nextBlockId = instanceData.nextBlockId;
+            if (this.data['nextBlockId']) {
+                options.nextBlockId = this.data.nextBlockId;
             } else {
                 options.nextBlockId = 0;
             }
             
-            options.tileTemplate = this.modal.find('.hidden .ipsTileTemplate');
+            options.tileTemplate = this.tilesModal.find('.hidden .ipsTileTemplate');
             
-            this.container.ipWidget_Portfolio_container('destroy');
-            this.container.ipWidget_Portfolio_container(options);
+            this.tilesContainer.ipWidget_portfolio_tile_container('destroy');
+            this.tilesContainer.ipWidget_portfolio_tile_container(options);
+            
+            
+            // init filter itemsContainer
+            this.filterModal = $('#ipWidgetPortfolioFilterPopup');
+            this.filterContainer = this.filterModal.find('.ipWidget_portfolio_filter_container');
+            
+            var options = {}
+            
+            if (this.data['filters']) {
+                options.filters = this.data.filters;
+            } else {
+                options.filters = new Array();
+            }
+            
+            options.filterTemplate = this.filterModal.find('.hidden .ipsFilterTemplate');
+            
+            this.filterContainer.ipWidget_portfolio_filter_container('destroy');
+            this.filterContainer.ipWidget_portfolio_filter_container(options);
+            
+            
+            // init filter sortation
+            /*$('.sortable' + this.data.widgetId).sortable({ axis: "x", cursor: "move", handle: ".handle", items: '> li:not(.pin)',
+                stop: function( event, ui ) {
+                    context.filterSortation = $(this).sortable('toArray', {attribute: 'data-sortable'});
+                    
+                    alert(context.filterSortation);
+                    
+                }
+            });
+            
+            $('.sortable' + this.data.widgetId).disableSelection();*/
+        };
+        
+        this.openTilesOptions = function () {
+            this.addButton = this.tilesModal.find('.ipsTileAdd');
+            this.confirmButton = this.tilesModal.find('.ipsConfirm');
+            
+            
+            // reinit tilesContainer
+            var options = {}
+            
+            if (this.data['tiles']) {
+                options.tiles = this.data.tiles;
+            } else {
+                options.tiles = new Array();
+            }
+            
+            if (this.data['nextBlockId']) {
+                options.nextBlockId = this.data.nextBlockId;
+            } else {
+                options.nextBlockId = 0;
+            }
+            
+            options.tileTemplate = this.tilesModal.find('.hidden .ipsTileTemplate');
+            
+            this.tilesContainer.ipWidget_portfolio_tile_container('destroy');
+            this.tilesContainer.ipWidget_portfolio_tile_container(options);
             
             
             // Button binding
@@ -82,8 +118,8 @@ var IpWidget_Portfolio;
             this.addButton.on('click', $.proxy(addTile, this));
             
             
-            // show modal
-            this.modal.modal();
+            // show tilesModal
+            this.tilesModal.modal();
             
             ipInitForms();
         };
@@ -94,35 +130,76 @@ var IpWidget_Portfolio;
             // save widgetdata and reload
             this.widgetObject.save(data, true);
             
-            // hide modal
-            this.modal.modal('hide');
+            // hide tilesModal
+            this.tilesModal.modal('hide');
         };
         
         var addTile = function () {
-            this.container.ipWidget_Portfolio_container('addTile');
+            this.tilesContainer.ipWidget_portfolio_tile_container('addTile');
         };
         
         this.getData = function() {
             var data = Object();
 
             data.tiles = [];
-            var $tiles = this.container.ipWidget_Portfolio_container('getTiles');
+            var $tiles = this.tilesContainer.ipWidget_portfolio_tile_container('getTiles');
             $tiles.each(function(index) {
                 var $this = $(this);
                 var tmpField = new Object();
-                tmpField.label = $this.ipWidget_Portfolio_Tile('getLabel');
-                tmpField.filter = $this.ipWidget_Portfolio_Tile('getFilter');
-                tmpField.blockId = $this.ipWidget_Portfolio_Tile('getBlockId');
+                tmpField.label = $this.ipWidget_portfolio_tile('getLabel');
+                tmpField.filter = $this.ipWidget_portfolio_tile('getFilter');
+                tmpField.blockId = $this.ipWidget_portfolio_tile('getBlockId');
                 
-                var status = $this.ipWidget_Portfolio_Tile('getStatus');
+                var status = $this.ipWidget_portfolio_tile('getStatus');
                 if (status != 'deleted') {
                     data.tiles.push(tmpField);
                 }
             });
             
-            data.nextBlockId = this.container.ipWidget_Portfolio_container('getNextBlockId');
+            data.filters = [];
+            var $filters = this.filterContainer.ipWidget_portfolio_filter_container('getFilters');
+            $filters.each(function(index) {
+                var $this = $(this);
+                var tmpField = new Object();
+                tmpField.filter = $this.ipWidget_portfolio_filter('getFilter');
+                
+                data.filters.push(tmpField);
+            });
+            
+            data.nextBlockId = this.tilesContainer.ipWidget_portfolio_tile_container('getNextBlockId');
             
             return data;
+        };
+        
+        this.openFilterOptions = function () {
+            this.confirmButton = this.filterModal.find('.ipsConfirm');
+            
+            
+            // reinit filters container
+            var options = {}
+            
+            if (this.data['filters']) {
+                options.filters = this.data.filters;
+            } else {
+                options.filters = new Array();
+            }
+            
+            options.filterTemplate = this.filterModal.find('.hidden .ipsFilterTemplate');
+            
+            this.filterContainer.ipWidget_portfolio_filter_container('destroy');
+            this.filterContainer.ipWidget_portfolio_filter_container(options);
+            
+            
+            // Button binding
+            var context = this;
+            this.confirmButton.off(); // ensure we will not bind second time
+            this.confirmButton.on('click', function(e) { console.log(context.getData()); }); //$.proxy(save, this));
+
+            
+            // show filtersModal
+            this.filterModal.modal();
+            
+            ipInitForms();
         };
     };
         
