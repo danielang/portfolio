@@ -1,17 +1,23 @@
 {
     "Portfolio": "Portfolio",
     
-    "Add Item to Portfolio": "Zu Portfolio hinzufügen",
-    "All": "Alle",
-    "Edit": "Bearbeiten",
-    "Delete": "Löschen",
+    "Tiles": "Kacheln",
+    "Filter": "Filter",
+    "Settings": "Einstellungen",
     
+    "All": "Alle",
+    "No Tiles are configured yet. Please click the gear of this plugin and select 'Tiles'.": "Bisher wurden keine Kacheln angelegt. Bitte klicken Sie auf das Zahnrad dieses Plugins und wählen Sie 'Kacheln'.",
+    
+    "Portfolio Tiles": "Portfolio Kacheln",
+    "Name": "Name",
+    "Filter": "Filter",
+    "Separate by ;": "Getrennt durch ;",
+    
+    "Tile Options": "Kacheloptionen",
+    "Tile": "Kachel",
     "Title": "Titel",
     "Description": "Beschreibung",
     "Image": "Bild",
-    "Page Url": "Seiten-Url",
-    "Filter": "Filter",
-    "Separate by ;": "Durch ; trennen",
+    "Page Url": "Link"
     
-    "Add/Edit Item": "Item hinzufügen/bearbeiten"
 }

@@ -58,7 +58,7 @@ class Controller extends \Ip\WidgetController
         $form->addField(new \Ip\Form\Field\RepositoryFile(
                 array(
                     'name' => 'imagelink',
-                    'label' => __( 'Images', 'Portfolio'),
+                    'label' => __( 'Image', 'Portfolio'),
                     'fileLimit' => 1,
                     'value' => empty($tile['imagelink']) ? null : array($tile['imagelink'])
                 )
@@ -109,7 +109,7 @@ class Controller extends \Ip\WidgetController
         $form->addField(new \Ip\Form\Field\RepositoryFile(
                 array(
                     'name' => 'imagelink',
-                    'label' => __( 'Images', 'Portfolio'),
+                    'label' => __( 'Image', 'Portfolio'),
                     'fileLimit' => 1,
                     'value' => empty($item['imagelink']) ? null : array($item['imagelink'])
                 )
