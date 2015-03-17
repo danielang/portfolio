@@ -2,6 +2,8 @@
 
 Portfolio-Plugin for ImpressPages CMS
 
+More information: http://market.impresspages.org/plugins/Portfolio
+
 # License
 
 The MIT License (MIT)
